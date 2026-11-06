@@ -1,1 +1,292 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>Daniel e Martina – Invito</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+:root{
+  --ivory:#FBF6F0;--beige:#EFE3D3;--rose:#D9B0AB;--rose-d:#9C6560;
+  --ink:#3A3330;--mute:#6E625B;--gold:#7A6032;--gold-l:#C4A66A;--line:rgba(196,166,106,.45);
+  --ok:#2F5D3A;--no:#8A3B35;color-scheme:light}
+*{box-sizing:border-box}
+html{background:var(--ivory)}
+body{margin:0;color:var(--ink);font-family:'Cormorant Garamond',Georgia,serif;min-height:100vh;position:relative;overflow-x:hidden;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+/* sfondo: lavaggi tenui rosa antico e beige, fissi dietro a tutto */
+body::before{content:"";position:fixed;inset:0;z-index:-2;
+  background:
+   radial-gradient(70% 38% at 0% 0%,rgba(217,176,171,.42),transparent 72%),
+   radial-gradient(55% 34% at 100% 22%,rgba(233,214,186,.62),transparent 72%),
+   radial-gradient(70% 36% at 0% 66%,rgba(217,176,171,.28),transparent 72%),
+   radial-gradient(60% 40% at 100% 100%,rgba(233,214,186,.7),transparent 72%),
+   var(--ivory)}
+/* grana di carta, appena percettibile */
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.06;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.sans{font-family:Montserrat,Arial,sans-serif}
+.wrap{max-width:520px;margin:0 auto;padding:0 16px}
+section{position:relative;padding:44px 8px;text-align:center}
+.eyebrow{font-family:Montserrat,Arial,sans-serif;font-size:12px;letter-spacing:.36em;text-transform:uppercase;color:var(--gold)}
+h1{font-size:clamp(54px,17vw,76px);font-weight:500;font-style:italic;line-height:.98;margin:16px 0 4px}
+h1 .amp{display:block;font-size:.5em;color:var(--rose-d);line-height:1.1;margin:2px 0}
+h2{font-size:36px;font-weight:600;margin:14px 0 2px}
+p{font-size:23px;line-height:1.35;margin:10px 0}
+.mute{color:var(--mute)}
+.date{font-size:30px;font-style:italic;color:var(--gold);margin-top:16px}
+/* ornamento divisorio */
+.orn{display:flex;align-items:center;gap:12px;margin:0 10px;height:20px}
+.orn::before,.orn::after{content:"";flex:1;height:1px}
+.orn::before{background:linear-gradient(90deg,transparent,var(--gold-l))}
+.orn::after{background:linear-gradient(270deg,transparent,var(--gold-l))}
+.orn svg{width:44px;height:14px;color:var(--gold-l)}
+/* hero */
+.hero{padding-top:56px;padding-bottom:56px;overflow:hidden}
+.frame{position:relative;border:1px solid var(--line);outline:1px solid var(--line);outline-offset:-10px;padding:52px 18px;background:rgba(255,255,255,.35)}
+.frame .sprig{position:absolute;width:96px;height:auto;color:var(--gold-l);opacity:.85;pointer-events:none}
+.frame .s1{left:-14px;top:-18px;transform:rotate(-8deg)}
+.frame .s2{right:-14px;bottom:-18px;transform:rotate(172deg)}
+.spark{width:18px;height:18px;color:var(--gold-l);margin:0 auto}
+.petal{position:absolute;top:-30px;width:11px;height:14px;background:var(--rose);opacity:.55;border-radius:100% 0 100% 0;animation:fall linear infinite;pointer-events:none}
+@keyframes fall{0%{transform:translate3d(0,0,0) rotate(0)}50%{transform:translate3d(24px,320px,0) rotate(160deg)}100%{transform:translate3d(-12px,640px,0) rotate(330deg)}}
+/* countdown */
+.cd{display:flex;justify-content:center;gap:10px;margin-top:18px}
+.cd div{flex:1;max-width:92px;padding:14px 4px 10px;border:1px solid var(--line);background:rgba(255,255,255,.55);border-radius:4px}
+.cd b{display:block;font-size:42px;font-weight:500;font-variant-numeric:lining-nums;line-height:1}
+.cd span{font-family:Montserrat,Arial,sans-serif;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+/* icone in cerchio */
+.ico-wrap{width:96px;height:96px;margin:0 auto;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line);
+  background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.8),rgba(217,176,171,.35))}
+.ico{width:58px;height:58px;color:var(--gold)}
+/* bottoni */
+.btn{display:inline-flex;align-items:center;justify-content:center;font-family:Montserrat,Arial,sans-serif;font-size:13px;letter-spacing:.14em;text-transform:uppercase;min-height:48px;padding:0 28px;border:1px solid var(--gold);background:transparent;color:var(--gold);cursor:pointer;text-decoration:none;margin-top:12px;border-radius:2px}
+.btn.fill{background:var(--rose-d);border-color:var(--rose-d);color:#fff}
+.row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.iban{font-family:Montserrat,Arial,sans-serif;font-size:16px;letter-spacing:.08em;border:1px dashed var(--gold-l);background:rgba(255,255,255,.55);padding:14px 10px;margin:16px 0 4px;word-break:break-word}
+.rsvp{margin:8px 0;padding:40px 18px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(217,176,171,.22),rgba(255,255,255,.5))}
+input{font-family:Montserrat,Arial,sans-serif;font-size:16px;min-height:48px;width:100%;padding:0 14px;border:1px solid var(--line);background:rgba(255,255,255,.8);color:var(--ink);text-align:center;margin:14px 0;border-radius:2px}
+.err{font-family:Montserrat,Arial,sans-serif;font-size:13px;color:var(--no);min-height:18px}
+.foot{padding:36px 8px 48px;text-align:center}
+.foot .sprig{width:64px;height:auto;color:var(--gold-l);margin:0 auto;display:block;transform:rotate(-8deg)}
+.admin{padding:24px 8px 64px}
+.admin ul{list-style:none;padding:0;margin:8px 0 24px}
+.admin li{font-size:22px;padding:8px 0;border-bottom:1px dotted var(--line)}
+/* comparsa dolce allo scroll */
+.js .rv{opacity:0;transform:translateY(16px);transition:opacity .9s ease,transform .9s ease}
+.js .rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.js .rv{opacity:1;transform:none;transition:none}.petal{display:none}}
+</style>
+</head>
+<body>
 
+<!-- ramoscello decorativo riusabile -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="sprig" viewBox="0 0 100 130" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+<path d="M12 124C30 96 44 60 78 10"/>
+<defs><path id="lf" d="M0 0C5 -6 13 -6 19 0C13 6 5 6 0 0Z"/></defs>
+<use href="#lf" transform="translate(20 110) rotate(-150)"/>
+<use href="#lf" transform="translate(24 104) rotate(-18)"/>
+<use href="#lf" transform="translate(31 91) rotate(-156)"/>
+<use href="#lf" transform="translate(35 85) rotate(-22)"/>
+<use href="#lf" transform="translate(42 71) rotate(-162)"/>
+<use href="#lf" transform="translate(46 65) rotate(-28)"/>
+<use href="#lf" transform="translate(55 51) rotate(-168)"/>
+<use href="#lf" transform="translate(58 45) rotate(-34)"/>
+<use href="#lf" transform="translate(67 31) rotate(-172)"/>
+<use href="#lf" transform="translate(70 25) rotate(-42)"/>
+<use href="#lf" transform="translate(78 10) rotate(-78)"/>
+<circle cx="14" cy="120" r="1.6" fill="currentColor" stroke="none"/>
+</symbol>
+<symbol id="orn" viewBox="0 0 44 14" fill="currentColor"><path d="M22 1l6 6-6 6-6-6z"/><circle cx="8" cy="7" r="1.6"/><circle cx="36" cy="7" r="1.6"/></symbol>
+<symbol id="spark" viewBox="0 0 20 20" fill="currentColor"><path d="M10 0c.6 5.4 4.6 9.4 10 10-5.4.6-9.4 4.6-10 10C9.4 14.6 5.4 10.6 0 10 5.4 9.4 9.4 5.4 10 0z"/></symbol>
+</svg>
+
+<div class="wrap">
+
+<section class="hero rv">
+<div id="petals" aria-hidden="true"></div>
+<div class="frame">
+<svg class="sprig s1" viewBox="0 0 100 130" aria-hidden="true"><use href="#sprig"/></svg>
+<svg class="sprig s2" viewBox="0 0 100 130" aria-hidden="true"><use href="#sprig"/></svg>
+<span class="eyebrow">Il nostro giorno</span>
+<h1>Daniel<span class="amp">&amp;</span>Martina</h1>
+<svg class="spark" aria-hidden="true"><use href="#spark"/></svg>
+<p style="margin-top:18px">Siamo lieti di invitarvi<br>al nostro matrimonio</p>
+<div class="date">11 settembre 2027</div>
+</div>
+</section>
+
+<div class="orn" aria-hidden="true"><svg><use href="#orn"/></svg></div>
+
+<section class="rv">
+<span class="eyebrow">Mancano</span>
+<div class="cd" id="cd" aria-live="off">
+<div><b id="cd-d">--</b><span>giorni</span></div>
+<div><b id="cd-h">--</b><span>ore</span></div>
+<div><b id="cd-m">--</b><span>minuti</span></div>
+<div><b id="cd-s">--</b><span>secondi</span></div>
+</div>
+<p class="mute" id="cd-end" hidden>È arrivato il nostro giorno!</p>
+</section>
+
+<div class="orn" aria-hidden="true"><svg><use href="#orn"/></svg></div>
+
+<section class="rv">
+<div class="ico-wrap"><svg class="ico" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M32 4v8M28 8h8"/><path d="M32 12L22 22v30h20V22z"/><path d="M22 28l-10 6v18M42 28l10 6v18"/><path d="M4 52h56"/><path d="M27 52V43a5 5 0 0110 0v9"/></svg></div>
+<h2>Cerimonia</h2>
+<p>Alle ore <b>10:30</b></p>
+<p class="mute">Chiesa di Santa Caterina<br>Cagliari</p>
+<a class="btn" id="map1" target="_blank" rel="noopener">Come arrivare</a>
+</section>
+
+<div class="orn" aria-hidden="true"><svg><use href="#orn"/></svg></div>
+
+<section class="rv">
+<div class="ico-wrap"><svg class="ico" viewBox="0 0 64 56" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 10h14c0 10-2 16-7 16s-7-6-7-16z"/><path d="M21 26v18M15 44h12"/><path d="M36 10h14c0 10-2 16-7 16s-7-6-7-16z"/><path d="M43 26v18M37 44h12"/><path d="M32 2v4M26 4l2 3M38 4l-2 3"/></svg></div>
+<h2>Ricevimento</h2>
+<p>Alle ore <b>17:00</b></p>
+<p class="mute">Il Giardino di Emma<br>Villassor</p>
+<a class="btn" id="map2" target="_blank" rel="noopener">Come arrivare</a>
+</section>
+
+<div class="orn" aria-hidden="true"><svg><use href="#orn"/></svg></div>
+
+<section class="rv">
+<span class="eyebrow">Un pensiero</span>
+<p style="margin-top:18px">La vostra presenza nel nostro giorno speciale sarà il regalo più bello che potremmo ricevere. ❤️</p>
+<p>Se desiderate farci un pensiero in più, saremo felici di ricevere un piccolo contributo per realizzare i nostri sogni e costruire nuovi ricordi insieme.</p>
+<div class="iban" id="iban">IT00 0000 0000 0000 0000 0000 000</div>
+<p class="mute" style="font-size:20px;margin-top:8px">Intestatario: Daniel e Martina</p>
+<button class="btn" id="copy">Copia IBAN</button>
+</section>
+
+<div class="orn" aria-hidden="true"><svg><use href="#orn"/></svg></div>
+
+<section class="rv" id="rsvp" style="padding-left:0;padding-right:0">
+<div class="rsvp">
+<div id="step1">
+<span class="eyebrow">Ci sarete?</span>
+<h2>Conferma la tua presenza</h2>
+<label class="sans mute" for="nm" style="font-size:13px;letter-spacing:.06em">Il tuo nome e cognome</label>
+<input id="nm" autocomplete="name" placeholder="Es. Mario Rossi">
+<div class="err" id="err" role="alert"></div>
+<div class="row">
+<button class="btn fill" id="yes">Confermo</button>
+<button class="btn" id="no">Non posso</button>
+</div>
+</div>
+<div id="step2" hidden>
+<span class="eyebrow">Grazie</span>
+<h2 id="thx"></h2>
+<svg class="spark" aria-hidden="true" style="margin:14px auto"><use href="#spark"/></svg>
+<p id="thx2"></p>
+<button class="btn" id="again">Cambia risposta</button>
+</div>
+</div>
+</section>
+
+<div class="foot rv">
+<svg class="sprig" viewBox="0 0 100 130" aria-hidden="true"><use href="#sprig"/></svg>
+<p class="mute" style="font-style:italic;margin-top:14px">Vi aspettiamo con gioia</p>
+<p style="font-size:26px;font-style:italic;color:var(--gold);margin:0">Daniel &amp; Martina</p>
+</div>
+
+<div class="admin" id="admin" hidden>
+<h2>Lista invitati (solo per te)</h2>
+<div class="sans mute" id="count" style="font-size:14px"></div>
+<h4 style="font-size:24px;margin:24px 0 0;color:var(--ok)">Hanno confermato</h4><ul id="lyes"></ul>
+<h4 style="font-size:24px;margin:24px 0 0;color:var(--no)">Non vengono</h4><ul id="lno"></ul>
+</div>
+
+</div>
+
+<script>
+// ====== DA COMPILARE ======
+const SUPABASE_URL="https://wkkdwqbhyyamdunamdyg.supabase.co";
+const SUPABASE_KEY="sb_publishable_KyeoaorebeA63VnbGhU1VQ_keABN5_q";
+const CERIMONIA=new Date("2027-09-11T10:30:00+02:00"); // ora italiana
+const MAPS_CHIESA="https://maps.app.goo.gl/vcgByKwL3ALbEJyK8?g_st=ic";
+const MAPS_RICEVIMENTO="https://maps.app.goo.gl/1t11vx4DqYkiN6KS6?g_st=ic";
+// ==========================
+const $=id=>document.getElementById(id);
+const H={apikey:SUPABASE_KEY,"Content-Type":"application/json"};
+$('map1').href=MAPS_CHIESA;$('map2').href=MAPS_RICEVIMENTO;
+
+// Comparsa allo scroll (con rete di sicurezza)
+(function(){
+  const els=[...document.querySelectorAll('.rv')];
+  const showAll=()=>els.forEach(e=>e.classList.add('in'));
+  if(!('IntersectionObserver' in window)){showAll();return}
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+  els.forEach(e=>io.observe(e));
+  setTimeout(showAll,4000);
+})();
+
+// Petali che cadono piano nell'apertura
+(function(){
+  const box=$('petals');
+  for(let i=0;i<9;i++){
+    const p=document.createElement('span');p.className='petal';
+    p.style.left=(5+i*11)+'%';
+    p.style.animationDuration=(14+(i*7)%9)+'s';
+    p.style.animationDelay=(-(i*3.1))+'s';
+    p.style.opacity=(.35+(i%3)*.12);
+    p.style.transform='scale('+(.8+(i%4)*.18)+')';
+    box.appendChild(p);
+  }
+})();
+
+// Countdown
+function tick(){
+  const ms=CERIMONIA-new Date();
+  if(ms<=0){$('cd').hidden=true;$('cd-end').hidden=false;return false}
+  const s=Math.floor(ms/1000);
+  $('cd-d').textContent=Math.floor(s/86400);
+  $('cd-h').textContent=Math.floor(s%86400/3600);
+  $('cd-m').textContent=Math.floor(s%3600/60);
+  $('cd-s').textContent=s%60;
+  return true;
+}
+if(tick()){const t=setInterval(()=>{if(!tick())clearInterval(t)},1000)}
+
+// Copia IBAN
+$('copy').onclick=async()=>{
+  try{await navigator.clipboard.writeText($('iban').textContent.replace(/\s+/g,''));$('copy').textContent='Copiato ✓'}
+  catch(e){$('copy').textContent='Seleziona e copia l’IBAN'}
+  setTimeout(()=>{$('copy').textContent='Copia IBAN'},2500);
+};
+
+// Conferma presenza
+function slug(s){return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,80)}
+async function send(ok){
+  const name=$('nm').value.trim();
+  if(name.length<2){$('err').textContent='Scrivi il tuo nome e cognome.';return}
+  $('err').textContent='';
+  try{
+    const r=await fetch(SUPABASE_URL+"/rest/v1/invitati?on_conflict=id",{method:"POST",headers:{...H,Prefer:"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({id:slug(name),nome:name,partecipa:ok})});
+    if(!r.ok)throw new Error(r.status);
+    $('thx').textContent=ok?'Non vediamo l’ora!':'Ci mancherai';
+    $('thx2').textContent=ok?'Grazie '+name+', abbiamo registrato la tua conferma.':'Grazie '+name+' per avercelo detto.';
+    $('step1').hidden=true;$('step2').hidden=false;
+  }catch(e){$('err').textContent='Non siamo riusciti a salvare la risposta. Riprova tra poco.'}
+}
+$('yes').onclick=()=>send(true);
+$('no').onclick=()=>send(false);
+$('again').onclick=()=>{$('step2').hidden=true;$('step1').hidden=false};
+
+// Sezione nascosta: si apre solo con ?lista=1 alla fine del link
+if(new URLSearchParams(location.search).get('lista')==='1'){
+  $('admin').hidden=false;
+  fetch(SUPABASE_URL+"/rest/v1/invitati?select=nome,partecipa&order=nome",{headers:H}).then(r=>r.json()).then(rows=>{
+    const y=rows.filter(x=>x.partecipa).map(x=>x.nome),n=rows.filter(x=>!x.partecipa).map(x=>x.nome);
+    const fill=(id,a)=>{const u=$(id);u.textContent='';a.forEach(t=>{const li=document.createElement('li');li.textContent=t;u.appendChild(li)});if(!a.length){const li=document.createElement('li');li.textContent='Nessuno per ora';li.style.color='var(--mute)';u.appendChild(li)}};
+    fill('lyes',y);fill('lno',n);
+    $('count').textContent=y.length+' confermati · '+n.length+' non vengono';
+  }).catch(()=>{$('count').textContent='Impossibile caricare la lista.'});
+}
+</script>
+</body>
+</html>
