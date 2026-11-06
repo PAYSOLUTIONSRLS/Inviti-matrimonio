@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Daniel e Martina – Invito</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--card:#FBF8F3;--ink:#2E2C28;--mute:#6B665D;--gold:#7A6032;--line:#D8CDB6;--ok:#2F5D3A;--no:#8A3B35;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root:not([data-theme="light"]){color-scheme:light dark}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17161400;--bg:#171614;--card:#221F1B;--ink:#F1EADB;--mute:#B5AC9B;--gold:#D2B574;--line:#4A4336;--ok:#8FC79B;--no:#E59A92}}
+:root[data-theme="dark"]{--bg:#171614;--card:#221F1B;--ink:#F1EADB;--mute:#B5AC9B;--gold:#D2B574;--line:#4A4336;--ok:#8FC79B;--no:#E59A92}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Cormorant Garamond',Georgia,serif;min-height:100vh}
+.sans{font-family:Montserrat,Arial,sans-serif}
+.home{max-width:720px;margin:0 auto;padding:64px 24px;text-align:center}
+.home h1{font-size:56px;font-weight:500;font-style:italic;margin:0 0 8px}
+.btn{font-family:Montserrat,Arial,sans-serif;font-size:14px;letter-spacing:.14em;text-transform:uppercase;min-height:48px;padding:0 28px;border:1px solid var(--gold);background:transparent;color:var(--gold);cursor:pointer}
+.btn.fill{background:var(--gold);color:var(--bg)}
+.ov{position:fixed;inset:0;background:rgba(20,18,15,.55);display:flex;align-items:center;justify-content:center;padding:20px;z-index:10}
+.ov[hidden]{display:none}
+.card{background:var(--card);border:1px solid var(--line);outline:1px solid var(--line);outline-offset:-10px;max-width:480px;width:100%;max-height:100%;overflow:auto;padding:44px 32px;text-align:center;box-sizing:border-box}
+.eyebrow{font-family:Montserrat,Arial,sans-serif;font-size:12px;letter-spacing:.36em;text-transform:uppercase;color:var(--gold)}
+.card h2{font-size:44px;font-weight:500;font-style:italic;margin:10px 0 6px;line-height:1.05}
+.card p{font-size:23px;line-height:1.35;margin:10px 0}
+.rule{width:64px;height:1px;background:var(--gold);margin:16px auto}
+input{font-family:Montserrat,Arial,sans-serif;font-size:16px;min-height:48px;width:100%;box-sizing:border-box;padding:0 14px;border:1px solid var(--line);background:var(--bg);color:var(--ink);text-align:center;margin:14px 0}
+.row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.admin{max-width:720px;margin:0 auto;padding:0 24px 64px}
+.admin h3{font-size:30px;font-weight:500;margin:0 0 12px;border-top:1px solid var(--line);padding-top:32px}
+.admin ul{list-style:none;padding:0;margin:8px 0 24px}
+.admin li{font-size:22px;padding:8px 0;border-bottom:1px dotted var(--line)}
+.err{font-family:Montserrat,Arial,sans-serif;font-size:13px;color:var(--no);min-height:18px}
+</style>
+</head>
+<body>
+<div class="home">
+<span class="eyebrow">Il nostro giorno</span>
+<h1>Daniel &amp; Martina</h1>
+<p style="font-size:22px;color:var(--mute);font-style:italic">11 settembre 2027</p>
+<button class="btn" id="reopen">Apri l’invito</button>
+</div>
+
+<div class="ov" id="ov">
+<div class="card" role="dialog" aria-modal="true" aria-labelledby="t">
+<div id="step1">
+<span class="eyebrow">Siete invitati</span>
+<h2 id="t">Daniel &amp; Martina</h2>
+<div class="rule"></div>
+<p>Ti invitano al loro matrimonio<br>l’<b>11 settembre 2027</b> alle ore <b>18:00</b><br>presso [nome della location]</p>
+<label class="sans" for="nm" style="font-size:13px;color:var(--mute);letter-spacing:.06em">Il tuo nome e cognome</label>
+<input id="nm" autocomplete="name" placeholder="Es. Mario Rossi">
+<div class="err" id="err" role="alert"></div>
+<div class="row">
+<button class="btn fill" id="yes">Confermo</button>
+<button class="btn" id="no">Non posso</button>
+</div>
+</div>
+<div id="step2" hidden>
+<span class="eyebrow">Grazie</span>
+<h2 id="thx"></h2>
+<div class="rule"></div>
+<p id="thx2"></p>
+<button class="btn" id="close">Chiudi</button>
+</div>
+</div>
+</div>
+
+<div class="admin" id="admin" hidden>
+<h3>Lista invitati (solo per te)</h3>
+<div class="sans" id="count" style="font-size:14px;color:var(--mute)"></div>
+<h4 style="font-size:24px;margin:24px 0 0;color:var(--ok)">Hanno confermato</h4><ul id="lyes"></ul>
+<h4 style="font-size:24px;margin:24px 0 0;color:var(--no)">Non vengono</h4><ul id="lno"></ul>
+</div>
+
+<script>
+// ====== DA COMPILARE ======
+const SUPABASE_URL="https://wkkdwqbhyyamdunamdyg.supabase.co";
+const SUPABASE_KEY="sb_publishable_KyeoaorebeA63VnbGhU1VQ_keABN5_q";
+// ==========================
+const $=id=>document.getElementById(id);
+const H={apikey:SUPABASE_KEY,"Content-Type":"application/json"};
+$('reopen').onclick=()=>{$('step1').hidden=false;$('step2').hidden=true;$('ov').hidden=false};
+$('close').onclick=()=>{$('ov').hidden=true};
+function slug(s){return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,80)}
+async function send(ok){
+  const name=$('nm').value.trim();
+  if(name.length<2){$('err').textContent='Scrivi il tuo nome e cognome.';return}
+  $('err').textContent='';
+  try{
+    const r=await fetch(SUPABASE_URL+"/rest/v1/invitati?on_conflict=id",{method:"POST",headers:{...H,Prefer:"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({id:slug(name),nome:name,partecipa:ok})});
+    if(!r.ok)throw new Error(r.status);
+    $('thx').textContent=ok?'Non vediamo l’ora!':'Ci mancherai';
+    $('thx2').textContent=ok?'Grazie '+name+', abbiamo registrato la tua conferma.':'Grazie '+name+' per avercelo detto.';
+    $('step1').hidden=true;$('step2').hidden=false;
+  }catch(e){$('err').textContent='Non siamo riusciti a salvare la risposta. Riprova tra poco.'}
+}
+$('yes').onclick=()=>send(true);
+$('no').onclick=()=>send(false);
+// Sezione nascosta: si apre solo con ?lista=1 alla fine del link
+if(new URLSearchParams(location.search).get('lista')==='1'){
+  $('admin').hidden=false;$('ov').hidden=true;
+  fetch(SUPABASE_URL+"/rest/v1/invitati?select=nome,partecipa&order=nome",{headers:H}).then(r=>r.json()).then(rows=>{
+    const y=rows.filter(x=>x.partecipa).map(x=>x.nome),n=rows.filter(x=>!x.partecipa).map(x=>x.nome);
+    const fill=(id,a)=>{const u=$(id);u.textContent='';a.forEach(t=>{const li=document.createElement('li');li.textContent=t;u.appendChild(li)});if(!a.length){const li=document.createElement('li');li.textContent='Nessuno per ora';li.style.color='var(--mute)';u.appendChild(li)}};
+    fill('lyes',y);fill('lno',n);
+    $('count').textContent=y.length+' confermati · '+n.length+' non vengono';
+  }).catch(()=>{$('count').textContent='Impossibile caricare la lista.'});
+}
+</script>
+</body>
+</html>
