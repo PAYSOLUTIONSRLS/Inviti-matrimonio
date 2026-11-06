@@ -73,7 +73,10 @@ input{font-family:Montserrat,Arial,sans-serif;font-size:16px;min-height:48px;wid
 .foot .sprig{width:64px;height:auto;color:var(--gold-l);margin:0 auto;display:block;transform:rotate(-8deg)}
 .admin{padding:24px 8px 64px}
 .admin ul{list-style:none;padding:0;margin:8px 0 24px}
-.admin li{font-size:22px;padding:8px 0;border-bottom:1px dotted var(--line)}
+.admin li{font-size:22px;padding:8px 0;border-bottom:1px dotted var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.mini{font-family:Montserrat,Arial,sans-serif;font-size:11px;letter-spacing:.08em;text-transform:uppercase;min-height:44px;padding:0 12px;border:1px solid var(--gold);background:transparent;color:var(--gold);border-radius:2px;cursor:pointer}
+.mini.del{border-color:var(--no);color:var(--no)}
+[hidden]{display:none!important}
 /* comparsa dolce allo scroll */
 .js .rv{opacity:0;transform:translateY(16px);transition:opacity .9s ease,transform .9s ease}
 .js .rv.in{opacity:1;transform:none}
@@ -197,6 +200,11 @@ input{font-family:Montserrat,Arial,sans-serif;font-size:16px;min-height:48px;wid
 <div class="admin" id="admin" hidden>
 <h2>Lista invitati (solo per te)</h2>
 <div class="sans mute" id="count" style="font-size:14px"></div>
+<div id="lock" class="row" style="justify-content:flex-start;margin-top:12px">
+<input id="pin" type="password" autocomplete="off" placeholder="PIN per modificare" style="max-width:220px;margin:0;text-align:left">
+<button class="btn" id="unlock" style="margin-top:0">Sblocca modifiche</button>
+</div>
+<div class="err" id="aerr" role="alert"></div>
 <h4 style="font-size:24px;margin:24px 0 0;color:var(--ok)">Hanno confermato</h4><ul id="lyes"></ul>
 <h4 style="font-size:24px;margin:24px 0 0;color:var(--no)">Non vengono</h4><ul id="lno"></ul>
 </div>
@@ -280,12 +288,57 @@ $('again').onclick=()=>{$('step2').hidden=true;$('step1').hidden=false};
 // Sezione nascosta: si apre solo con ?lista=1 alla fine del link
 if(new URLSearchParams(location.search).get('lista')==='1'){
   $('admin').hidden=false;
-  fetch(SUPABASE_URL+"/rest/v1/invitati?select=nome,partecipa&order=nome",{headers:H}).then(r=>r.json()).then(rows=>{
-    const y=rows.filter(x=>x.partecipa).map(x=>x.nome),n=rows.filter(x=>!x.partecipa).map(x=>x.nome);
-    const fill=(id,a)=>{const u=$(id);u.textContent='';a.forEach(t=>{const li=document.createElement('li');li.textContent=t;u.appendChild(li)});if(!a.length){const li=document.createElement('li');li.textContent='Nessuno per ora';li.style.color='var(--mute)';u.appendChild(li)}};
+  let PIN=null,ROWS=[];
+  const el=(tag,txt,cls)=>{const e=document.createElement(tag);if(txt!=null)e.textContent=txt;if(cls)e.className=cls;return e};
+  const rpc=async(fn,body)=>{
+    const r=await fetch(SUPABASE_URL+"/rest/v1/rpc/"+fn,{method:"POST",headers:H,body:JSON.stringify(body)});
+    if(!r.ok)throw new Error(r.status);
+    const t=await r.text();return t?JSON.parse(t):null;
+  };
+  const render=()=>{
+    const y=ROWS.filter(x=>x.partecipa),n=ROWS.filter(x=>!x.partecipa);
+    const fill=(id,a)=>{
+      const u=$(id);u.textContent='';
+      a.forEach(row=>{
+        const li=el('li');li.appendChild(el('span',row.nome));
+        if(PIN){
+          const box=el('span');
+          const mv=el('button',row.partecipa?'Segna non viene':'Segna viene','mini');
+          mv.onclick=()=>act('cambia_risposta',{p_id:row.id,p_pin:PIN,p_partecipa:!row.partecipa});
+          const del=el('button','Elimina','mini del');del.style.marginLeft='8px';
+          let armed=false;
+          del.onclick=()=>{
+            if(!armed){armed=true;del.textContent='Sicuro?';setTimeout(()=>{armed=false;del.textContent='Elimina'},3000);return}
+            act('elimina_invitato',{p_id:row.id,p_pin:PIN});
+          };
+          box.append(mv,del);li.appendChild(box);
+        }
+        u.appendChild(li);
+      });
+      if(!a.length){const li=el('li','Nessuno per ora');li.style.color='var(--mute)';u.appendChild(li)}
+    };
     fill('lyes',y);fill('lno',n);
     $('count').textContent=y.length+' confermati · '+n.length+' non vengono';
-  }).catch(()=>{$('count').textContent='Impossibile caricare la lista.'});
+  };
+  const load=async()=>{
+    const r=await fetch(SUPABASE_URL+"/rest/v1/invitati?select=id,nome,partecipa&order=nome",{headers:H});
+    ROWS=await r.json();render();
+  };
+  const act=async(fn,body)=>{
+    $('aerr').textContent='';
+    try{await rpc(fn,body);await load()}
+    catch(e){$('aerr').textContent='Operazione non riuscita. Hai eseguito il file SQL su Supabase?'}
+  };
+  $('unlock').onclick=async()=>{
+    $('aerr').textContent='';
+    const p=$('pin').value;
+    if(!p){$('aerr').textContent='Scrivi il PIN.';return}
+    try{
+      const ok=await rpc('verifica_pin',{p_pin:p});
+      if(ok===true){PIN=p;$('lock').hidden=true;render()}else{$('aerr').textContent='PIN errato.'}
+    }catch(e){$('aerr').textContent='Non riesco a verificare il PIN. Hai eseguito il file SQL su Supabase?'}
+  };
+  load().catch(()=>{$('count').textContent='Impossibile caricare la lista.'});
 }
 </script>
 </body>
